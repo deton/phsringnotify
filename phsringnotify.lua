@@ -1,6 +1,12 @@
 require "nixio"
 
-deadtime = 10 -- [sec]
+ircserver = "10.254.166.45"
+botnick = "[PHSdeto]"
+channel = "#projA"
+privmsg = "PRIVMSG " .. channel .. " :@deton RING"
+
+threshold = 100
+deadtime = 20 -- [sec]
 prevOn = 0
 
 -- http://wiki.linino.org/doku.php?id=wiki:lininoio_sysfs
@@ -8,36 +14,32 @@ f = assert(io.open("/sys/bus/iio/devices/iio:device0/enable", "w"))
 f:write("1\n")
 f:close()
 
--- f = assert(io.open("/sys/bus/iio/devices/iio:device0/in_voltage_A4_scale", "r"))
--- scale = f:read("*number")
--- f:close()
-
 sock = nixio.socket("inet", "stream")
-sock:connect("192.168.137.147", 6667)
-sock:write("USER a b c d\r\nNICK detonPHS\r\n")
+sock:connect(ircserver, 6667)
+sock:write("USER a b c d\r\nNICK " .. botnick .. "\r\nJOIN " .. channel .. "\r\n")
 sock:setblocking(false)
 
 while true do
-  nixio.nanosleep(0, 100000000) -- 100ms
+  nixio.nanosleep(0, 600000000) -- 600ms
 
-  f = assert(io.open("/sys/bus/iio/devices/iio:device0/in_voltage_A4_raw", "r"))
-  v = f:read("*number")
+  local f = assert(io.open("/sys/bus/iio/devices/iio:device0/in_voltage_A5_raw", "r"))
+  local v = f:read("*number")
   f:close()
 
-  print(v)
-  if v < 770 then
-    now = os.time()
-    diff = os.difftime(now, prevOn)
+  io.write(v, " ")
+  io.flush()
+  if v > threshold then
+    local now = os.time()
+    local diff = os.difftime(now, prevOn)
     if diff >= deadtime then
       print("PRIVMSG")
-      sock:write("PRIVMSG deton :@deton RING (" .. v .. ")\r\n")
+      sock:write(privmsg .. " (" .. v .. ")\r\n")
       prevOn = now
     end
   end
   
-  ircmsg = sock:read(513)
+  local ircmsg = sock:read(513)
   if ircmsg and string.find("" .. ircmsg, "PING ") then
-    sock:write("PONG dummy")
+    sock:write("PONG dummy\r\n")
   end
 end
-
