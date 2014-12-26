@@ -1,9 +1,16 @@
+#!/usr/bin/lua
 require "nixio"
 
-ircserver = "10.254.166.45"
-botnick = "[PHSdeto]"
-channel = "#projA"
-privmsg = "PRIVMSG " .. channel .. " :@deton RING"
+ircserver = arg[1]
+botnick = arg[2]
+channel = arg[3]
+targetnick = arg[4]
+if targetnick == nil then
+  print("Usage: lua phsringnotify.lua <ircserver> <botnick> <channel> <targetnick>")
+  print("   ex: lua phsringnotify.lua 10.254.166.45 '[PHSdeto]' '#projA' deton")
+  os.exit(1)
+end
+privmsg = "PRIVMSG " .. channel .. " :@" .. targetnick .. " RING"
 
 threshold = 100
 deadtime = 20 -- [sec]
