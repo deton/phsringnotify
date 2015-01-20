@@ -1,10 +1,22 @@
-# PHS着信通知
+# PHS着信時電波を検出してIRC通知
 [PHS着信時電波を検出してIRC通知するデバイス(mbed LPC1768版)](http://developer.mbed.org/users/deton/code/PhsRingNotify/)
-を、Linino ONE(Maker Faire Tokyo 2014で購入)に移植したものです。
+を、Intel Edison + Arduino Boardや
+Linino ONE(Maker Faire Tokyo 2014で購入)に移植したものです。
 
+自分の構内PHSに着信があった時に気づくための用途だけでなく、
+[予定通知ボット](https://github.com/deton/ExchangeAppointmentBot)と連携して、
+近くの人の構内PHS着信時にその人の予定をIRCに流す用途でも使えます。
+
+# Intel Edison + Arduino Board版(phsringnotify.py)
+ADCを使うのでArduino Boardを使用。mraaライブラリを使用。
+
+phsringnotify.serviceファイルは、自動起動用設定ファイルです。
+/etc/systemd/systemにコピーして、`systemctl enable phsringnotify`
+
+# Linone ONE版(phsringnotify.lua)
 デフォルトで入っていたluaとnixioライブラリを使用。
 
-# [Linino ONE](http://www.linino.org/modules/linino-one/)について
+## [Linino ONE](http://www.linino.org/modules/linino-one/)について
 [Arduino Yun](http://arduino.cc/en/Guide/ArduinoYun)を小さくしたもの。
 
 Arduino用マイコン(ATmega32u4, lininoのドキュメントではMCU)と、
@@ -31,7 +43,7 @@ lininoのサイトではnode.jsの例が挙げられているが、
 (もしくは、MIPS用のクロスコンパイラをlininoのサイトからダウンロードして
 C言語等で書く。)
 
-## WPA2 Enterpriseへの接続方法
+### Linino ONEでのWPA2 Enterpriseへの接続方法
 http://forum.arduino.cc/index.php?topic=197267.msg1463424#msg1463424
 
 この設定後、設定したWiFi APに、再起動後も接続されるように、
