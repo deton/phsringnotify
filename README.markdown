@@ -53,7 +53,7 @@ http://forum.arduino.cc/index.php?topic=197267.msg1463424#msg1463424
 uci set arduino.@wifi-iface[0].mode=sta
 uci set arduino.@wifi-iface[0].ssid=MySSID
 uci set arduino.@wifi-iface[0].identity=ユーザID
-uci set arduino.@wifi-iface[0].key=パスワード
+uci set arduino.@wifi-iface[0].password=パスワード
 uci set arduino.@wifi-iface[0].encryption=mixed-wpa+aes
 uci set arduino.@wifi-iface[0].eap_type=peap
 uci commit arduino
