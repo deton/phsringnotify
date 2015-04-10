@@ -20,7 +20,7 @@ phsringnotify.serviceファイルは、自動起動用設定ファイルです�
 [Arduino Yun](http://arduino.cc/en/Guide/ArduinoYun)を小さくしたもの。
 
 Arduino用マイコン(ATmega32u4, lininoのドキュメントではMCU)と、
-Linux(OpenWrt)用PC(Atheros AR9331, MIPS)が載っていて、WiFi接続可能。
+Linux(OpenWrt)用CPU(Atheros AR9331, MIPS)が載っていて、WiFi接続可能。
 
 + WiFi接続可能。技適取得済。
 + IOがArduinoと同じ5V。Edisonの1.8Vよりも扱いやすい。
